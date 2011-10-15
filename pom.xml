@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>de.ingrid</groupId>
+		<artifactId>ingrid-base-pom</artifactId>
+		<version>3.2.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.ingrid</groupId>
+	<artifactId>ingrid-search-utils</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>ingrid-search-utils</name>
+	<url>http://maven.apache.org</url>
+	<scm>
+		<connection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-facetsearch/trunk</connection>
+		<developerConnection>scm:svn:https://harrison.its-technidata.de:444/svn/ingrid/ingrid-facetsearch/trunk</developerConnection>
+	</scm>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<repositories>
+		<!--
+			Repo of parent pom needed, parent pom may not be installed locally
+			yet
+		-->
+		<repository>
+			<id>de.ingrid.all</id>
+			<name>Maven Repo InGrid</name>
+			<url>http://harrison.its-technidata.de/archiva/repository/ingrid-all</url>
+		</repository>
+	</repositories>
+
+	<!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
+	<!--
+		<dependencyManagement> <dependencies> <dependency> ... </dependency>
+		</dependencies> </dependencyManagement>
+	-->
+	<!-- ==================== DEPENDENCIES ==================== -->
+	<dependencies>
+		<dependency>
+			<groupId>de.ingrid</groupId>
+			<artifactId>ingrid-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>2.9.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<version>2.9.0</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>1.0</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<!--  Gson: Java to Json conversion -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>
