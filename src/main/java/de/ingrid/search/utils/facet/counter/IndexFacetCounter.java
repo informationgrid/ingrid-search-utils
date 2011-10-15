@@ -95,4 +95,9 @@ public class IndexFacetCounter implements IFacetCounter {
         _facetClassRegistry = facetClassRegistry;
     }
 
+    @Override
+    public void initialize() {
+        _facetClassRegistry.clear();
+    }
+
 }

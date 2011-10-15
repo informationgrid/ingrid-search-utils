@@ -20,5 +20,11 @@ public interface IFacetCounter {
      * @return Map with facet class as key and the number of hits
      */
     public IngridDocument count(IngridDocument result, IngridQuery query, OpenBitSet[] bitsets, List<FacetDefinition> facetDefs);
+    
+    /**
+     * Initializes the facet counter. Clears all caches and stored facet classes.
+     * 
+     */
+    public void initialize();
 
 }

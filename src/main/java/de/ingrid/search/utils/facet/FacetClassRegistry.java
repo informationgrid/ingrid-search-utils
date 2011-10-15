@@ -79,6 +79,8 @@ public class FacetClassRegistry {
     }
 
     public void clear() {
+        _facetClassMap.clear();
+        _cache.removeAll();
     }
 
     /**

@@ -48,8 +48,9 @@ public class ConfigurableFacetCounter implements IFacetCounter {
      * (non-Javadoc)
      * 
      * @see
-     * de.ingrid.search.utils.facet.counter.IFacetCounter#count(de.ingrid.utils.query
-     * .IngridQuery, org.apache.lucene.util.OpenBitSetDISI, java.util.List)
+     * de.ingrid.search.utils.facet.counter.IFacetCounter#count(de.ingrid.utils
+     * .query .IngridQuery, org.apache.lucene.util.OpenBitSetDISI,
+     * java.util.List)
      */
     @Override
     public IngridDocument count(IngridDocument result, IngridQuery query, OpenBitSet[] bitsets,
@@ -102,6 +103,11 @@ public class ConfigurableFacetCounter implements IFacetCounter {
             result += bitSet.cardinality();
         }
         return result;
+    }
+
+    @Override
+    public void initialize() {
+        // nothing to be done
     }
 
 }

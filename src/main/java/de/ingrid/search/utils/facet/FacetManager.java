@@ -41,6 +41,9 @@ public class FacetManager {
 
     public void initialize() {
         LOG.info("Initialize facet manager with query: " + initialFacetQuery);
+        for (IFacetCounter fc : facetCounters) {
+            fc.initialize();
+        }
         if (facetCounters != null && initialFacetQuery != null) {
             IngridDocument result = new IngridDocument();
 
