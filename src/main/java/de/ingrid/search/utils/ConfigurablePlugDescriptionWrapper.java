@@ -3,6 +3,8 @@
  */
 package de.ingrid.search.utils;
 
+import org.apache.log4j.Logger;
+
 import de.ingrid.utils.IConfigurable;
 import de.ingrid.utils.PlugDescription;
 
@@ -18,12 +20,17 @@ public class ConfigurablePlugDescriptionWrapper implements IConfigurable {
 
     PlugDescription plugDescription = null;
 
+    private static Logger LOG = Logger.getLogger(ConfigurablePlugDescriptionWrapper.class);
+
     public ConfigurablePlugDescriptionWrapper() {
 
     }
 
     public ConfigurablePlugDescriptionWrapper(PlugDescription plugDescription) {
         this.plugDescription = plugDescription;
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Configure called, update plugdescription.");
+        }
     }
 
     /*
