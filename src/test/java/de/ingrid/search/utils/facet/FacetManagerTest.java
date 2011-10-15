@@ -19,10 +19,6 @@ import org.junit.Test;
 
 import de.ingrid.search.utils.IQueryParser;
 import de.ingrid.search.utils.LuceneIndexReaderWrapper;
-import de.ingrid.search.utils.facet.FacetClassProducer;
-import de.ingrid.search.utils.facet.FacetClassRegistry;
-import de.ingrid.search.utils.facet.FacetManager;
-import de.ingrid.search.utils.facet.FacetUtils;
 import de.ingrid.search.utils.facet.counter.IFacetCounter;
 import de.ingrid.search.utils.facet.counter.IndexFacetCounter;
 import de.ingrid.utils.IngridDocument;

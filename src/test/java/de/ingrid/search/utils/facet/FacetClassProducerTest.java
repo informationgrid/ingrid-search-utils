@@ -20,10 +20,6 @@ import org.junit.Test;
 
 import de.ingrid.search.utils.IQueryParser;
 import de.ingrid.search.utils.LuceneIndexReaderWrapper;
-import de.ingrid.search.utils.facet.FacetClass;
-import de.ingrid.search.utils.facet.FacetClassDefinition;
-import de.ingrid.search.utils.facet.FacetClassProducer;
-import de.ingrid.search.utils.facet.FacetDefinition;
 
 public class FacetClassProducerTest {
 
