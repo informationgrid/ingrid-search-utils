@@ -54,8 +54,15 @@ public class FacetUtils {
         for (Object facet : facets) {
             Map aFacet = (Map) facet;
             String facetName = (String) aFacet.get("id");
+            String facetDefinition = (String) aFacet.get("field");
+            if (facetDefinition == null) {
+                facetDefinition = facetName;
+            }
+            String facetFragment = (String) aFacet.get("query");
+            FacetDefinition fd = new FacetDefinition(facetName, facetDefinition);
+            fd.setQueryFragment(facetFragment);
+            
             List facetClasses = (List) aFacet.get("classes");
-            FacetDefinition fd = new FacetDefinition(facetName, (String) aFacet.get("id"));
             // if facet classes were defined then look through those and create
             // their queries as String
             if (facetClasses != null) {
@@ -63,7 +70,7 @@ public class FacetUtils {
                 for (Object facetClass : facetClasses) {
                     facetClassName = (String) ((Map) facetClass).get("id");
                     fd.addFacetClass(new FacetClassDefinition(FacetUtils.getCacheKeyName(facetName, facetClassName),
-                            (String) ((Map) facetClass).get("fragment")));
+                            (String) ((Map) facetClass).get("query")));
                 }
             }
             facetDefs.add(fd);

@@ -59,6 +59,7 @@ public class DummyTermQueryParser implements IQueryParser {
                 }
             }
         }
+        
     }
 
     private void addPhraseQuery(BooleanQuery booleanQuery, String value, Occur occur) {

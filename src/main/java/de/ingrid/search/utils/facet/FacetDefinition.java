@@ -16,6 +16,13 @@ public class FacetDefinition {
      * e.g.: datatype:iso, metaclass:0, partner:bw
      */
     private String name;
+    
+    /**
+     * Optional, a query queryFragment that narrows the facet classes in field definition.
+     * 
+     */
+    private String queryFragment;
+    
 
     /**
      * 
@@ -67,5 +74,14 @@ public class FacetDefinition {
     public String getName() {
         return name;
     }
+    
+    public String getQueryFragment() {
+        return queryFragment;
+    }
+
+    public void setQueryFragment(String queryFragment) {
+        this.queryFragment = queryFragment;
+    }
+
 
 }

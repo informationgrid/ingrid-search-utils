@@ -168,14 +168,14 @@ public class FacetManagerTest {
         f2.put("id", "datatype");
         Map classes = new HashMap();
         classes.put("id", "iso");
-        classes.put("fragment", "datatype:csw AND metaclass:1 OR metaclass:3");
+        classes.put("query", "datatype:csw AND metaclass:1 OR metaclass:3");
         f2.put("classes", Arrays.asList(new Object[] { classes }));
 
         Map f3 = new HashMap();
         f3.put("id", "datatype");
         Map classes2 = new HashMap();
         classes2.put("id", "myBundWaldbrand");
-        classes2.put("fragment", "partner:bund AND (Waldbrand OR Auto)");
+        classes2.put("query", "partner:bund AND (Waldbrand OR Auto)");
         f3.put("classes", Arrays.asList(new Object[] { classes2 }));
 
         ingridQuery.put("FACETS", Arrays.asList(new Object[] { f1, f2, f3 }));

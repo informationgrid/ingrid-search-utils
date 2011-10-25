@@ -82,6 +82,24 @@ public class FacetClassProducerTest {
         Assert.assertNotNull(fcNi);
         Assert.assertTrue(0 < fcBund.getBitSets()[0].cardinality());
         Assert.assertTrue(0 < fcNi.getBitSets()[0].cardinality());
+
+        fcd = new FacetDefinition("partner_bund", "provider");
+        fcd.setQueryFragment("partner:bund");
+        fcs = fcp.produceClasses(fcd);
+        FacetClass fcBu1 = null;
+        FacetClass fcBu2 = null;
+        for (FacetClass fc : fcs) {
+            if (fc.getFacetClassName().equals("provider:bund_1")) {
+                fcBu1 = fc;
+            } else if (fc.getFacetClassName().equals("provider:bund_2")) {
+                fcBu2 = fc;
+            }
+        }
+        Assert.assertNotNull(fcBu1);
+        Assert.assertNotNull(fcBu2);
+        Assert.assertTrue(0 < fcBu1.getBitSets()[0].cardinality());
+        Assert.assertTrue(0 < fcBu2.getBitSets()[0].cardinality());
+    
     }
 
     @Test
