@@ -8,9 +8,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.CachingWrapperFilter;
+import org.apache.lucene.search.DocIdSet;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.util.OpenBitSet;
+import org.apache.lucene.util.OpenBitSetDISI;
 
 import de.ingrid.search.utils.LuceneIndexReaderWrapper;
 import de.ingrid.utils.query.IngridQuery;
@@ -88,11 +90,21 @@ public class FacetUtils {
             IndexReader[] indexReaders = indexReaderWrapper.getIndexReader();
             OpenBitSet[] result = new OpenBitSet[indexReaders.length];
             for (int i = 0; i < indexReaders.length; i++) {
-                OpenBitSet queryBitset = (OpenBitSet) filter.getDocIdSet(indexReaders[i]);
-                result[i] = queryBitset;
+                DocIdSet queryBitset = filter.getDocIdSet(indexReaders[i]);
+                OpenBitSet queryOpenBitset;
+                // check for an required OpenBitSet, create one if the docIdSet is not already a OpenBitSet instance
+                // not 100% sure when an openBitSet is returned and when not
+                // was observed if the query is no Boolean query or if the query is a single/multiple MUST_NOT query
+                if (queryBitset instanceof OpenBitSet) {
+                    queryOpenBitset = (OpenBitSet) queryBitset;
+                } else {
+                    queryOpenBitset = new OpenBitSetDISI(queryBitset.iterator(), indexReaders[i].maxDoc());
+                }
+                
+                result[i] = queryOpenBitset;
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Create bit set for indexreader[" + i + "] for lucene query '" + query
-                            + "' with cardinallity=" + queryBitset.cardinality() + " in "
+                            + "' with cardinallity=" + queryOpenBitset.cardinality() + " in "
                             + (System.currentTimeMillis() - start) + " ms.");
                 }
             }

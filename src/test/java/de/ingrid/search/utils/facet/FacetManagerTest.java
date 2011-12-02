@@ -95,6 +95,30 @@ public class FacetManagerTest {
                 sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"));
 
         Assert.assertEquals(2, counts.getLong("partner:bund"));
+
+        // check for odd class cast exception in
+        // FacetUtils.getBitSetsFromQuery()
+        // providing a certain query was leading to an class cast exception
+        // this was fixed, checking the instance of the returned bitset class
+        fm.initialize();
+        ingridQuery = null;
+        try {
+            ingridQuery = QueryStringParser.parse("-antike");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        addFacets(ingridQuery);
+
+        queryBitSets = FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery), new LuceneIndexReaderWrapper(
+                new IndexReader[] { indexReader }));
+        counts = fm.getFacetClassCounts(ingridQuery, queryBitSets);
+
+        Assert.assertTrue("Cardinality of facet class must not be bigger than the cardinality of query.",
+                sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"));
+
+        Assert.assertEquals(0, counts.getLong("partner:bund"));
+
     }
 
     @Test
