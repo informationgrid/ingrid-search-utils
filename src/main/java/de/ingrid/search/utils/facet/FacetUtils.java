@@ -63,7 +63,7 @@ public class FacetUtils {
             String facetFragment = (String) aFacet.get("query");
             FacetDefinition fd = new FacetDefinition(facetName, facetDefinition);
             fd.setQueryFragment(facetFragment);
-            
+
             List facetClasses = (List) aFacet.get("classes");
             // if facet classes were defined then look through those and create
             // their queries as String
@@ -92,15 +92,17 @@ public class FacetUtils {
             for (int i = 0; i < indexReaders.length; i++) {
                 DocIdSet queryBitset = filter.getDocIdSet(indexReaders[i]);
                 OpenBitSet queryOpenBitset;
-                // check for an required OpenBitSet, create one if the docIdSet is not already a OpenBitSet instance
+                // check for an required OpenBitSet, create one if the docIdSet
+                // is not already a OpenBitSet instance
                 // not 100% sure when an openBitSet is returned and when not
-                // was observed if the query is no Boolean query or if the query is a single/multiple MUST_NOT query
+                // was observed if the query is no Boolean query or if the query
+                // is a single/multiple MUST_NOT query
                 if (queryBitset instanceof OpenBitSet) {
                     queryOpenBitset = (OpenBitSet) queryBitset;
                 } else {
                     queryOpenBitset = new OpenBitSetDISI(queryBitset.iterator(), indexReaders[i].maxDoc());
                 }
-                
+
                 result[i] = queryOpenBitset;
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Create bit set for indexreader[" + i + "] for lucene query '" + query
@@ -113,6 +115,20 @@ public class FacetUtils {
             LOG.error("Error producing bitset from query '" + query + "'.", e);
         }
         return null;
+    }
+
+    /**
+     * Creates an OpenBitset with a specific cardinality. 
+     * 
+     * @param cardinality
+     * @return
+     */
+    public static OpenBitSet createOpenBitsetWithCardinality(long cardinality) {
+
+        OpenBitSet result = new OpenBitSet(cardinality);
+        result.set(0, cardinality);
+        return result;
+
     }
 
 }

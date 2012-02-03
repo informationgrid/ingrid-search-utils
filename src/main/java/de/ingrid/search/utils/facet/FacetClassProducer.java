@@ -214,15 +214,25 @@ public class FacetClassProducer {
     }
 
     private Query getLuceneQuery(String definition) throws ParseException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Start getting LuceneQuery from IngridQuery String: " + definition);
+        }
         IngridQuery iq = QueryStringParser.parse(definition);
         // new TermQuery(new Term(facet[0],facet[1])));
         Query q = _queryParsers.parse(iq);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Resulting lucene query after parsing: " + q);
+        }
         q = addSpecialFields(q, iq);
         return q;
     }
 
     @SuppressWarnings("unchecked")
     private BooleanQuery addSpecialFields(Query q, IngridQuery iq) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Add special fields (partner, provider, datatype) from IngridQuery: " + iq);
+        }
+
         BooleanQuery bq = new BooleanQuery();
         List<FieldQuery> partners = iq.getArrayList("partner");
         if (partners != null) {
