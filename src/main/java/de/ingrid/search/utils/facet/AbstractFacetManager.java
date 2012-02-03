@@ -17,7 +17,7 @@ import de.ingrid.utils.query.IngridQuery;
  * </p>
  * 
  */
-public abstract class AbstractFacetManager {
+public abstract class AbstractFacetManager implements IFacetManager {
 
     private static Logger LOG = Logger.getLogger(AbstractFacetManager.class);
 
@@ -28,8 +28,14 @@ public abstract class AbstractFacetManager {
     public AbstractFacetManager() {
     }
 
+    /* (non-Javadoc)
+     * @see de.ingrid.search.utils.facet.IFacetManager#initialize()
+     */
     public abstract void initialize();
 
+    /* (non-Javadoc)
+     * @see de.ingrid.search.utils.facet.IFacetManager#addFacets(de.ingrid.utils.IngridHits, de.ingrid.utils.query.IngridQuery)
+     */
     public void addFacets(IngridHits hits, IngridQuery query) {
         if (query.containsKey("FACETS")) {
             long start = 0;
