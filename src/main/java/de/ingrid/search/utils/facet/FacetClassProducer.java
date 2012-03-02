@@ -52,13 +52,18 @@ public class FacetClassProducer {
             if (LOG.isDebugEnabled()) {
                 start = System.currentTimeMillis();
             }
-            if (facetClassDef.getDefinition() != null) {
-                fc = produceClassFromQuery(facetClassDef.getName(), getLuceneQuery(facetClassDef.getDefinition()));
+            if (facetClassDef.getFragment() != null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Create facet class '" + facetClassDef.getName() + "' with fragment '"
+                            + facetClassDef.getFragment() + "'.");
+                }
+                fc = produceClassFromQuery(facetClassDef.getName(), getLuceneQuery(facetClassDef.getFragment()));
             } else {
+                LOG.warn("Create EMPTY facet class '" + facetClassDef.getName() + "'. No fragment set.");
                 fc = new FacetClass(facetClassDef.getName(), new OpenBitSet[indexReaderWrapper.getIndexReader().length]);
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Create facet class template for '" + fc + " in " + (System.currentTimeMillis() - start)
+                LOG.debug("Create facet class template for '" + fc + "' in " + (System.currentTimeMillis() - start)
                         + " ms.");
             }
         } catch (IOException e) {
@@ -74,8 +79,11 @@ public class FacetClassProducer {
         List<FacetClass> fClasses = new ArrayList<FacetClass>();
         try {
             if (facetDef.getQueryFragment() == null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Create classes from index field '" + facetDef.getField() + "'.");
+                }
                 // presume we have a single field definition
-                TermInfo[] tis = getHighFreqTerms(MAX_NUM, facetDef.getDefinition());
+                TermInfo[] tis = getHighFreqTerms(MAX_NUM, facetDef.getField());
                 for (TermInfo ti : tis) {
                     long start = 0;
                     if (LOG.isInfoEnabled()) {
@@ -97,7 +105,10 @@ public class FacetClassProducer {
                 Map<Term, Integer> tiq = new HashMap<Term, Integer>();
                 for (int i = 0; i < bitSets.length; i++) {
                     IndexReader indexReader = indexReaderWrapper.getIndexReader()[i];
-                    TermEnum termEnum = indexReader.terms(new Term(facetDef.getDefinition(), ""));
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Read terms from field '" + facetDef.getField() + "' for bitset " + i);
+                    }
+                    TermEnum termEnum = indexReader.terms(new Term(facetDef.getField(), ""));
                     // iterate through all the values of this facet and see look
                     // at number of hits per term
                     try {
@@ -107,15 +118,21 @@ public class FacetClassProducer {
                         try {
                             do {
                                 Term term = termEnum.term();
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug("Term found: '" + term.toString() + "'.");
+                                }
                                 int count = 0;
                                 int minFreq = 0;
-                                if (term != null && term.field() == facetDef.getDefinition()) { // interned
+                                if (term != null && term.field() == facetDef.getField()) { // interned
                                     // comparison
                                     termDocs.seek(term);
                                     while (termDocs.next()) {
                                         if (bitSets[i].get(termDocs.doc())) {
                                             count++;
                                         }
+                                    }
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Occurence found:" + count);
                                     }
                                     if (count > 0) {
                                         if (!"".equals(term.text())) {
@@ -170,7 +187,8 @@ public class FacetClassProducer {
                             start = System.currentTimeMillis();
                         }
                         fClasses.add(produceClassFromQuery(ti.term.field() + ":" + ti.term.text(),
-                                getLuceneQuery(facetDef.getQueryFragment() + " " + ti.term.field() + ":" + ti.term.text())));
+                                getLuceneQuery(facetDef.getQueryFragment() + " " + ti.term.field() + ":"
+                                        + ti.term.text())));
                         if (LOG.isInfoEnabled()) {
                             LOG.info("Create facet class: " + fClasses.get(fClasses.size() - 1) + " in "
                                     + (System.currentTimeMillis() - start) + " ms.");

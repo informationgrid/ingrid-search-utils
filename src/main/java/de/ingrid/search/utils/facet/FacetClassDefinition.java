@@ -3,7 +3,7 @@ package de.ingrid.search.utils.facet;
 public class FacetClassDefinition {
     private String name;
 
-    private String definition;
+    private String queryFragment;
     
     /**
      * contains the calculated document hits matching this Facet class
@@ -11,9 +11,9 @@ public class FacetClassDefinition {
     private long hitCount = -1;
 
     
-    public FacetClassDefinition(String facetName, String definition) {
+    public FacetClassDefinition(String facetName, String queryFragment) {
         this.name = facetName;
-        this.definition = definition;
+        this.queryFragment = queryFragment;
     }
 
     public void setHitCount(long hitCount) {
@@ -32,12 +32,12 @@ public class FacetClassDefinition {
         return name;
     }
 
-    public void setDefinition(String definition) {
-        this.definition = definition;
+    public void setQueryFragment(String queryFragment) {
+        this.queryFragment = queryFragment;
     }
 
-    public String getDefinition() {
-        return definition;
+    public String getFragment() {
+        return queryFragment;
     }
 
 }

@@ -8,7 +8,7 @@ public class FacetDefinition {
     /**
      * Should contain the index field where this facet belongs to.
      */
-    private String definition;
+    private String field;
 
     /**
      * id = FacetName:FacetValue
@@ -31,9 +31,9 @@ public class FacetDefinition {
     private List<FacetClassDefinition> classes;
     
 
-    public FacetDefinition(String facetName, String definition) {
+    public FacetDefinition(String facetName, String field) {
         this.name = facetName;
-        this.definition = definition;
+        this.field = field;
         this.classes = new ArrayList<FacetClassDefinition>();
     }
 
@@ -59,12 +59,12 @@ public class FacetDefinition {
         return classes;
     }
 
-    public void setDefinition(String definition) {
-        this.definition = definition;
+    public void setField(String field) {
+        this.field = field;
     }
 
-    public String getDefinition() {
-        return definition;
+    public String getField() {
+        return field;
     }
 
     public void setName(String name) {

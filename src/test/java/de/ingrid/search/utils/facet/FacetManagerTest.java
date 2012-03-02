@@ -183,6 +183,31 @@ public class FacetManagerTest {
         System.out.println("many facets 3nd different search took: " + duration + "ms");
     }
 
+    @Test
+    public void filterFacetDefinitionTest() {
+        IngridQuery ingridQuery = null;
+        try {
+            ingridQuery = QueryStringParser.parse("wasser");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        addFacets(ingridQuery);
+
+        ConfigurableFacetClassProcessor facetClassProcessor = new ConfigurableFacetClassProcessor();
+        Map<String, Map<String, String>> config = new HashMap<String, Map<String, String>>();
+        Map<String, String> configValue = new HashMap<String, String>();
+        configValue.put("datatype:csw AND metaclass:1 OR metaclass:3", "changed");
+        config.put("datatype:iso", configValue);
+        configValue = new HashMap<String, String>();
+        configValue.put("partner:bund AND (Waldbrand OR Auto)", "changed2");
+        config.put("datatype:myBundWaldbrand", configValue);
+        facetClassProcessor.setFacetFilterDefinitions(config);
+        List<FacetDefinition> defs = FacetUtils.getFacetDefinitions(ingridQuery);
+        facetClassProcessor.process(defs);
+        Assert.assertEquals("changed", defs.get(1).getClasses().get(0).getFragment());
+        Assert.assertEquals("changed2", defs.get(2).getClasses().get(0).getFragment());
+    }
+
     @SuppressWarnings("unchecked")
     private void addFacets(IngridQuery ingridQuery) {
         Map f1 = new HashMap();

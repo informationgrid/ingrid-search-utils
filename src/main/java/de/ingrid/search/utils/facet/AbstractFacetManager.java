@@ -1,10 +1,12 @@
 package de.ingrid.search.utils.facet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.util.OpenBitSet;
 
+import de.ingrid.search.utils.IFacetDefinitionProcessor;
 import de.ingrid.search.utils.IQueryParsers;
 import de.ingrid.search.utils.facet.counter.IFacetCounter;
 import de.ingrid.utils.IngridDocument;
@@ -24,6 +26,9 @@ public abstract class AbstractFacetManager implements IFacetManager {
     protected List<IFacetCounter> facetCounters;
 
     protected IQueryParsers queryParsers = null;
+    
+    protected List<IFacetDefinitionProcessor> facetDefinitionProcessors = new ArrayList<IFacetDefinitionProcessor>();
+
 
     public AbstractFacetManager() {
     }
@@ -60,6 +65,9 @@ public abstract class AbstractFacetManager implements IFacetManager {
     protected IngridDocument getFacetClassCounts(IngridQuery query, OpenBitSet[] bitset) {
         // get all FacetDefinitions from the Query
         List<FacetDefinition> defs = FacetUtils.getFacetDefinitions(query);
+        
+        // filter facet definitions if appropriate
+        filterFacetDefinitions(defs);
 
         IngridDocument result = new IngridDocument();
         // calculate the Facets from the results of the base query
@@ -70,6 +78,13 @@ public abstract class AbstractFacetManager implements IFacetManager {
 
         return result;
     }
+    
+    protected void filterFacetDefinitions(List<FacetDefinition> facetDefs) {
+        for (IFacetDefinitionProcessor facetdefProcessor : facetDefinitionProcessors) {
+            facetdefProcessor.process(facetDefs);
+        }
+    }
+    
 
     protected abstract OpenBitSet[] getResultBitsets(IngridHits hits, IngridQuery query);
 
@@ -89,4 +104,8 @@ public abstract class AbstractFacetManager implements IFacetManager {
         this.facetCounters = facetCounters;
     }
 
+    public void setFacetDefinitionProcessors(List<IFacetDefinitionProcessor> facetDefinitionProcessors) {
+        this.facetDefinitionProcessors = facetDefinitionProcessors;
+    }
+    
 }

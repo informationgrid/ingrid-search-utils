@@ -1,5 +1,7 @@
 package de.ingrid.search.utils.facet;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.lucene.util.OpenBitSet;
 
@@ -11,14 +13,20 @@ import de.ingrid.utils.query.IngridQuery;
 import de.ingrid.utils.queryparser.QueryStringParser;
 
 /**
- * <p>The FacetManger provides an interface to add facet information to a
+ * <p>
+ * The FacetManger provides an interface to add facet information to a
  * IngridHits object. It extracts the facet definition information from an
- * IngridQuery object.</p>
+ * IngridQuery object.
+ * </p>
  * 
- * <p>This implementation must be configured with at least one index.</p>
+ * <p>
+ * This implementation must be configured with at least one index.
+ * </p>
  * 
  * 
- * <p>It must be configured with</p>
+ * <p>
+ * It must be configured with
+ * </p>
  * <ul>
  * <li><b>IQueryParsers</b> - provides parsing from IngridQuery to Lucene Query
  * object.</li>
@@ -26,7 +34,8 @@ import de.ingrid.utils.queryparser.QueryStringParser;
  * More than one because the nutch search engine can use multiple indexes.</li>
  * <li><b>List of IFacetCounter</b> - A list of facet counters that create
  * facets and match the facets with the current query.</li>
- * <li><b>Initial facet query</b> - An initial facet query to initialize the facets of this index based iplug.</li>
+ * <li><b>Initial facet query</b> - An initial facet query to initialize the
+ * facets of this index based iplug.</li>
  * </ul>
  * 
  */
@@ -53,9 +62,12 @@ public class FacetManager extends AbstractFacetManager {
 
             try {
                 IngridQuery q = QueryStringParser.parse(initialFacetQuery);
+                List<FacetDefinition> defs = FacetUtils.getFacetDefinitions(q);
+                // filter facet definitions if appropriate
+                filterFacetDefinitions(defs);
 
                 for (IFacetCounter fc : facetCounters) {
-                    fc.count(result, q, new OpenBitSet[] { new OpenBitSet(1L) }, FacetUtils.getFacetDefinitions(q));
+                    fc.count(result, q, new OpenBitSet[] { new OpenBitSet(1L) }, defs);
                 }
             } catch (Exception e) {
                 LOG.error("Error initialize facet manager with query: " + initialFacetQuery, e);
