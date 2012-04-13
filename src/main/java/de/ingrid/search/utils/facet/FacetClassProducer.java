@@ -53,11 +53,12 @@ public class FacetClassProducer {
                 start = System.currentTimeMillis();
             }
             if (facetClassDef.getFragment() != null) {
+                Query q = getLuceneQuery(facetClassDef.getFragment());
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Create facet class '" + facetClassDef.getName() + "' with fragment '"
-                            + facetClassDef.getFragment() + "'.");
+                            + facetClassDef.getFragment() + "' from query '" + q + "'.");
                 }
-                fc = produceClassFromQuery(facetClassDef.getName(), getLuceneQuery(facetClassDef.getFragment()));
+                fc = produceClassFromQuery(facetClassDef.getName(), q);
             } else {
                 LOG.warn("Create EMPTY facet class '" + facetClassDef.getName() + "'. No fragment set.");
                 fc = new FacetClass(facetClassDef.getName(), new OpenBitSet[indexReaderWrapper.getIndexReader().length]);
