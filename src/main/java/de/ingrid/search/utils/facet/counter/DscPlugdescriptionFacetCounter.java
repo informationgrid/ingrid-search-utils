@@ -5,6 +5,7 @@ package de.ingrid.search.utils.facet.counter;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.lucene.util.OpenBitSet;
 
 import de.ingrid.search.utils.ConfigurablePlugDescriptionWrapper;
@@ -42,6 +43,9 @@ public class DscPlugdescriptionFacetCounter extends ConfigurableFacetCounter {
 
     private ConfigurablePlugDescriptionWrapper plugDescriptionWrapper = null;
 
+    private static Logger LOG = Logger.getLogger(DscPlugdescriptionFacetCounter.class);
+    
+    
     /*
      * (non-Javadoc)
      * 
@@ -61,11 +65,19 @@ public class DscPlugdescriptionFacetCounter extends ConfigurableFacetCounter {
                         if (fd.getClasses() != null) {
                             for (FacetClassDefinition fcd : fd.getClasses()) {
                                 if (fcd.getName().equals(fcdString)) {
-                                    addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                                    long sum = sumBitsetCardinalities(bitsets);
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                                    }
+                                    addResult(result, fcdString, sum);
                                 }
                             }
                         } else {
-                            addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                            long sum = sumBitsetCardinalities(bitsets);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                            }
+                            addResult(result, fcdString, sum);
                         }
                     }
                 }
@@ -76,11 +88,19 @@ public class DscPlugdescriptionFacetCounter extends ConfigurableFacetCounter {
                         if (fd.getClasses() != null) {
                             for (FacetClassDefinition fcd : fd.getClasses()) {
                                 if (fcd.getName().equals(fcdString)) {
-                                    addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                                    long sum = sumBitsetCardinalities(bitsets);
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                                    }
+                                    addResult(result, fcdString, sum);
                                 }
                             }
                         } else {
-                            addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                            long sum = sumBitsetCardinalities(bitsets);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                            }
+                            addResult(result, fcdString, sum);
                         }
                     }
                 }
@@ -94,11 +114,19 @@ public class DscPlugdescriptionFacetCounter extends ConfigurableFacetCounter {
                                 if (fd.getClasses() != null) {
                                     for (FacetClassDefinition fcd : fd.getClasses()) {
                                         if (fcd.getName().equals(fcdString)) {
-                                            addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                                            long sum = sumBitsetCardinalities(bitsets);
+                                            if (LOG.isDebugEnabled()) {
+                                                LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                                            }
+                                            addResult(result, fcdString, sum);
                                         }
                                     }
                                 } else {
-                                    addResult(result, fcdString, sumBitsetCardinalities(bitsets));
+                                    long sum = sumBitsetCardinalities(bitsets);
+                                    if (LOG.isDebugEnabled()) {
+                                        LOG.debug("Add facet '" + fcdString + "' with cardinality " + sum + ".");
+                                    }
+                                    addResult(result, fcdString, sum);
                                 }
                             }
                         }

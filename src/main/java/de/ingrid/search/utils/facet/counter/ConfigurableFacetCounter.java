@@ -6,6 +6,7 @@ package de.ingrid.search.utils.facet.counter;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.lucene.util.OpenBitSet;
 
 import de.ingrid.search.utils.facet.FacetClassDefinition;
@@ -44,6 +45,8 @@ public class ConfigurableFacetCounter implements IFacetCounter {
 
     private List<String> facetClassDefinitions = null;
 
+    private static Logger LOG = Logger.getLogger(ConfigurableFacetCounter.class);
+
     /*
      * (non-Javadoc)
      * 
@@ -59,14 +62,22 @@ public class ConfigurableFacetCounter implements IFacetCounter {
             if (fd.getClasses() == null) {
                 if (facetDefinitions != null && facetDefinitions.containsKey(fd.getName())) {
                     for (String fcd : facetDefinitions.get(fd.getName())) {
-                        addResult(result, fcd, sumBitsetCardinalities(bitsets));
+                        long sum = sumBitsetCardinalities(bitsets);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Add facet '" + fcd + "' with cardinality " + sum + ".");
+                        }
+                        addResult(result, fcd, sum);
                     }
                 }
             } else {
                 if (facetClassDefinitions != null) {
                     for (FacetClassDefinition fcd : fd.getClasses()) {
                         if (facetClassDefinitions.contains(fcd.getName())) {
-                            addResult(result, fcd.getName(), sumBitsetCardinalities(bitsets));
+                            long sum = sumBitsetCardinalities(bitsets);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Add facet '" + fcd.getName() + "' with cardinality " + sum + ".");
+                            }
+                            addResult(result, fcd.getName(), sum);
                         }
                     }
                 }
