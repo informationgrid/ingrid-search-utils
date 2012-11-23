@@ -120,12 +120,11 @@ public class FacetClassProducer {
                             do {
                                 Term term = termEnum.term();
                                 if (LOG.isDebugEnabled()) {
-                                    LOG.debug("Term found: '" + term.toString() + "'.");
+                                    LOG.debug("Term found: '" + term.toString() + "' [term-field: "+term.field()+", facet-field:"+facetDef.getField()+"].");
                                 }
                                 int count = 0;
                                 int minFreq = 0;
-                                if (term != null && term.field() == facetDef.getField()) { // interned
-                                    // comparison
+                                if (term != null && term.field().equals(facetDef.getField())) {
                                     termDocs.seek(term);
                                     while (termDocs.next()) {
                                         if (bitSets[i].get(termDocs.doc())) {

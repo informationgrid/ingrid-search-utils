@@ -24,13 +24,18 @@ public class IndexFacetCounter implements IFacetCounter {
     /*
      * (non-Javadoc)
      * 
-     * @see de.ingrid.search.utils.facet.counter.IFacetCounter#count(java.util.Map,
+     * @see
+     * de.ingrid.search.utils.facet.counter.IFacetCounter#count(java.util.Map,
      * de.ingrid.utils.query.IngridQuery, org.apache.lucene.util.OpenBitSetDISI,
      * java.util.List)
      */
     @Override
     public IngridDocument count(IngridDocument result, IngridQuery query, OpenBitSet[] bitsets,
             List<FacetDefinition> facetDefs) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Count facets with '" + this.getClass().getName() + "'");
+        }
+
         if (result == null) {
             return result;
         }
@@ -42,6 +47,10 @@ public class IndexFacetCounter implements IFacetCounter {
         // get all FacetClasses from the definitions, which contain a BitSet
         // of all the documents containing each FacetClass
         for (FacetDefinition def : facetDefs) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Get facet '" + def.getName() + "': [field: " + def.getField() + ", query: "
+                        + def.getQueryFragment() + ", classes: " + def.getClasses() + "]");
+            }
             facetClasses.addAll(_facetClassRegistry.getFacetClasses(def));
         }
 
