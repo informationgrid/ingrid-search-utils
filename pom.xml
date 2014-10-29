@@ -2,14 +2,14 @@
 	<parent>
 		<groupId>de.ingrid</groupId>
 		<artifactId>ingrid-base-pom</artifactId>
-		<version>3.3.0</version>
+		<version>3.5.0-SNAPSHOT-R304</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.ingrid</groupId>
 	<artifactId>ingrid-search-utils</artifactId>
-	<version>3.4.0-SNAPSHOT</version>
+	<version>3.5.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>ingrid-search-utils</name>
@@ -59,10 +59,12 @@
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
+			<version>1.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
