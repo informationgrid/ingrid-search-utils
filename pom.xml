@@ -19,9 +19,6 @@
 		<developerConnection>scm:git:git@github.com:informationgrid/ingrid-search-utils.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<repositories>
 		<!--
 			Repo of parent pom needed, parent pom may not be installed locally
