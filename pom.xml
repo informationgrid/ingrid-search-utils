@@ -9,7 +9,7 @@
 
 	<groupId>de.ingrid</groupId>
 	<artifactId>ingrid-search-utils</artifactId>
-	<version>3.6.0-SNAPSHOT</version>
+	<version>3.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>InGrid Search-Utils</name>
@@ -17,7 +17,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:informationgrid/ingrid-search-utils.git</connection>
 		<developerConnection>scm:git:git@github.com:informationgrid/ingrid-search-utils.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>ingrid-search-utils-3.5.0</tag>
   </scm>
 	<repositories>
 		<!--
