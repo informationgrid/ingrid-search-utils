@@ -24,7 +24,7 @@
     <repository>
       <id>de.ingrid.all</id>
       <name>Maven Repo InGrid</name>
-      <url>https://dev.informationgrid.eu/archiva/repository/ingrid-all</url>
+      <url>https://nexus.informationgrid.eu/repository/maven-public</url>
     </repository>
   </repositories>
   <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
@@ -33,7 +33,7 @@
       <dependency>
         <groupId>de.ingrid</groupId>
         <artifactId>ingrid-version-management-pom</artifactId>
-        <version>3.6.0-SNAPSHOT</version>
+        <version>3.6.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
