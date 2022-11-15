@@ -43,9 +43,9 @@ import org.apache.lucene.search.Scorer;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.PriorityQueue;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LuceneSearchTest {
 
@@ -55,7 +55,7 @@ public class LuceneSearchTest {
     private List<String> providerValues;
     File indexDir = null;
 
-    @Before
+    @BeforeEach
     public void init() {
         try {
             indexDir = DummyIndex.getTestIndex();
@@ -72,7 +72,7 @@ public class LuceneSearchTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (indexDir != null && indexDir.exists()) {
             indexDir.delete();
@@ -80,7 +80,7 @@ public class LuceneSearchTest {
     }
 
     @Test
-    public void bitSetGenerationSpeedTest() {
+    void bitSetGenerationSpeedTest() {
         try {
             MyCollector facetCollector = new MyCollector();
             long start = System.currentTimeMillis();
@@ -166,7 +166,7 @@ public class LuceneSearchTest {
     }
 
     @Test
-    public void querySearchForFacets() {
+    void querySearchForFacets() {
         System.out.println("\nSEARCH FOR FACETS WHEN QUERY IS 'water'\n");
         getAllPartnerAndProviderFacets();
         FacetCollector facetCollector = new FacetCollector(bitsets);
@@ -248,9 +248,9 @@ public class LuceneSearchTest {
     }
 
     @Test
-    public void calculateHighFreqTerms() {
+    void calculateHighFreqTerms() {
         long start = System.currentTimeMillis();
-        String[] fields = { "provider" };
+        String[] fields = {"provider"};
         try {
             TermInfo[] tis = getHighFreqTerms(searcher.getIndexReader(), 10, fields);
             long duration = System.currentTimeMillis() - start;
@@ -263,9 +263,9 @@ public class LuceneSearchTest {
     }
 
     @Test
-    public void calculateHighFreqTermsOfPartnerAndProvider() {
+    void calculateHighFreqTermsOfPartnerAndProvider() {
         long start = System.currentTimeMillis();
-        String[] fields = { "partner", "provider" };
+        String[] fields = {"partner", "provider"};
         try {
             TermInfo[] tis = getHighFreqTerms(searcher.getIndexReader(), 200, fields);
             long duration = System.currentTimeMillis() - start;

@@ -41,9 +41,9 @@ import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.PriorityQueue;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LuceneBitSetSearchTest {
 
@@ -52,7 +52,7 @@ public class LuceneBitSetSearchTest {
     private Query baseQuery;
     File indexDir = null;
 
-    @Before
+    @BeforeEach
     public void init() {
         try {
             indexDir = DummyIndex.getTestIndex();
@@ -66,7 +66,7 @@ public class LuceneBitSetSearchTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (indexDir != null && indexDir.exists()) {
             indexDir.delete();
@@ -74,7 +74,7 @@ public class LuceneBitSetSearchTest {
     }
 
     @Test
-    public void facetSearch() throws Exception {
+    void facetSearch() throws Exception {
         subQueries = new HashMap<String, Query>();
 
         List<String[]> facets = getAllPartnerProvider();

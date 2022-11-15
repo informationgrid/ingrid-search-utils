@@ -22,12 +22,14 @@
  */
 package de.ingrid.search.utils.facet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.Assert;
 
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
@@ -36,9 +38,9 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.ingrid.search.utils.IQueryParser;
 import de.ingrid.search.utils.LuceneIndexReaderWrapper;
@@ -48,7 +50,7 @@ public class FacetClassProducerTest {
     FacetClassProducer fcp;
     File indexDir;
 
-    @Before
+    @BeforeEach
     public void setup() {
         IndexSearcher searcher = null;
         indexDir = DummyIndex.getTestIndex();
@@ -72,7 +74,7 @@ public class FacetClassProducerTest {
         fcp.setQueryParsers(qp);
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         if (indexDir != null && indexDir.exists()) {
             indexDir.delete();
@@ -80,15 +82,15 @@ public class FacetClassProducerTest {
     }
 
     @Test
-    public final void testProduceClass() {
+    final void testProduceClass() {
         FacetClassDefinition fccd = new FacetClassDefinition("partner:ni", "wasser partner:ni");
         FacetClass fc = fcp.produceClass(fccd);
-        Assert.assertEquals("partner:ni", fc.getFacetClassName());
-        Assert.assertTrue(2 <= fc.getBitSets()[0].cardinality());
+        assertEquals("partner:ni", fc.getFacetClassName());
+        assertTrue(2 <= fc.getBitSets()[0].cardinality());
     }
 
     @Test
-    public final void testProduceClasses() {
+    final void testProduceClasses() {
         FacetDefinition fcd = new FacetDefinition("partner", "partner");
         List<FacetClass> fcs = fcp.produceClasses(fcd);
         FacetClass fcBund = null;
@@ -100,10 +102,10 @@ public class FacetClassProducerTest {
                 fcNi = fc;
             }
         }
-        Assert.assertNotNull(fcBund);
-        Assert.assertNotNull(fcNi);
-        Assert.assertTrue(0 < fcBund.getBitSets()[0].cardinality());
-        Assert.assertTrue(0 < fcNi.getBitSets()[0].cardinality());
+        assertNotNull(fcBund);
+        assertNotNull(fcNi);
+        assertTrue(0 < fcBund.getBitSets()[0].cardinality());
+        assertTrue(0 < fcNi.getBitSets()[0].cardinality());
 
         fcd = new FacetDefinition("partner_bund", "provider");
         fcd.setQueryFragment("partner:bund");
@@ -117,23 +119,23 @@ public class FacetClassProducerTest {
                 fcBu2 = fc;
             }
         }
-        Assert.assertNotNull(fcBu1);
-        Assert.assertNotNull(fcBu2);
-        Assert.assertTrue(0 < fcBu1.getBitSets()[0].cardinality());
-        Assert.assertTrue(0 < fcBu2.getBitSets()[0].cardinality());
-    
+        assertNotNull(fcBu1);
+        assertNotNull(fcBu2);
+        assertTrue(0 < fcBu1.getBitSets()[0].cardinality());
+        assertTrue(0 < fcBu2.getBitSets()[0].cardinality());
+
     }
 
     @Test
-    public final void testProduceClassFromQuery() throws IOException {
+    final void testProduceClassFromQuery() throws IOException {
         BooleanQuery bq = new BooleanQuery();
         Term luceneTerm = new Term("partner", "bund");
         TermQuery luceneTermQuery = new TermQuery(luceneTerm);
         bq.add(luceneTermQuery, Occur.MUST);
 
         FacetClass fc = fcp.produceClassFromQuery("partner:bund", bq);
-        Assert.assertEquals("partner:bund", fc.getFacetClassName());
-        Assert.assertTrue(2 <= fc.getBitSets()[0].cardinality());
+        assertEquals("partner:bund", fc.getFacetClassName());
+        assertTrue(2 <= fc.getBitSets()[0].cardinality());
     }
 
 }

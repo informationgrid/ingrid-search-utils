@@ -22,15 +22,15 @@
  */
 package de.ingrid.search.utils.facet.counter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.apache.lucene.util.OpenBitSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.ingrid.search.utils.ConfigurablePlugDescriptionWrapper;
 import de.ingrid.search.utils.facet.FacetDefinition;
@@ -46,14 +46,14 @@ public class DscPlugdescriptionFacetCounterTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testCount() {
+    void testCount() {
 
         DscPlugdescriptionFacetCounter fc = new DscPlugdescriptionFacetCounter();
 
-        String[] facetClassDefinitions = { "datatype:csw", "datatype:dsc" };
+        String[] facetClassDefinitions = {"datatype:csw", "datatype:dsc"};
 
         HashMap<String, List<String>> facetDefinitions = new HashMap<String, List<String>>();
-        facetDefinitions.put("location", Arrays.asList(new String[] { "location:ffm", "location:b" }));
+        facetDefinitions.put("location", Arrays.asList(new String[]{"location:ffm", "location:b"}));
 
         PlugDescription pd = new PlugDescription();
         pd.addPartner("he");
@@ -88,7 +88,7 @@ public class DscPlugdescriptionFacetCounterTest {
         class2.put("id", "dsc");
         Map class3 = new HashMap();
         class3.put("id", "iso");
-        f2.put("classes", Arrays.asList(new Object[] { class1, class2, class3 }));
+        f2.put("classes", Arrays.asList(new Object[]{class1, class2, class3}));
 
         Map f3 = new HashMap();
         f3.put("id", "location");
@@ -100,26 +100,26 @@ public class DscPlugdescriptionFacetCounterTest {
         f5.put("id", "provider");
         Map class4 = new HashMap();
         class4.put("id", "he_p1");
-        f5.put("classes", Arrays.asList(new Object[] { class4 }));
-        
-        query.put("FACETS", Arrays.asList(new Object[] { f1, f2, f3, f4, f5 }));
+        f5.put("classes", Arrays.asList(new Object[]{class4}));
+
+        query.put("FACETS", Arrays.asList(new Object[]{f1, f2, f3, f4, f5}));
 
         List<FacetDefinition> fDefs = FacetUtils.getFacetDefinitions(query);
-        fc.count(result, null, new OpenBitSet[] {bs}, fDefs);
+        fc.count(result, null, new OpenBitSet[]{bs}, fDefs);
 
-        Assert.assertEquals(true, result.getLong("datatype:csw") == bs.cardinality());
-        Assert.assertEquals(true, result.getLong("datatype:dsc") == bs.cardinality());
-        Assert.assertEquals(true, result.get("datatype:iso") == null);
-        Assert.assertEquals(true, result.getLong("location:ffm") == bs.cardinality());
-        Assert.assertEquals(true, result.getLong("location:b") == bs.cardinality());
+        assertEquals(true, result.getLong("datatype:csw") == bs.cardinality());
+        assertEquals(true, result.getLong("datatype:dsc") == bs.cardinality());
+        assertEquals(true, result.get("datatype:iso") == null);
+        assertEquals(true, result.getLong("location:ffm") == bs.cardinality());
+        assertEquals(true, result.getLong("location:b") == bs.cardinality());
 
-        Assert.assertEquals(true, result.getLong("partner:he") == bs.cardinality());
-        Assert.assertEquals(true, result.getLong("partner:ni") == bs.cardinality());
+        assertEquals(true, result.getLong("partner:he") == bs.cardinality());
+        assertEquals(true, result.getLong("partner:ni") == bs.cardinality());
 
-        Assert.assertEquals(true, result.getLong("provider_ni:he_p1") == bs.cardinality());
-        Assert.assertEquals(true, result.getLong("provider_ni:ni_p2") == bs.cardinality());
-        
-        Assert.assertEquals(true, result.getLong("provider:he_p1") == bs.cardinality());
+        assertEquals(true, result.getLong("provider_ni:he_p1") == bs.cardinality());
+        assertEquals(true, result.getLong("provider_ni:ni_p2") == bs.cardinality());
+
+        assertEquals(true, result.getLong("provider:he_p1") == bs.cardinality());
 
     }
     
