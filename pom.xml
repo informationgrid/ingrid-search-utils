@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-search-utils</artifactId>
-  <version>5.15.0.3324-SNAPSHOT</version>
+  <version>5.15.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>InGrid Search-Utils</name>
   <url>http://maven.apache.org</url>
@@ -27,12 +27,17 @@
       <url>https://nexus.informationgrid.eu/repository/maven-public</url>
     </repository>
   </repositories>
+  
+  <properties>
+    <log4j2.version>2.19.0</log4j2.version>
+  </properties>
+  
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>5.15.0.3324-SNAPSHOT</version>
+      <version>5.15.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>junit</groupId>
@@ -64,9 +69,19 @@
       <version>1.4.1</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+      <version>${log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>net.sf.json-lib</groupId>
