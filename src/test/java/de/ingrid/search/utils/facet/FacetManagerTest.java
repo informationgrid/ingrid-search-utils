@@ -22,6 +22,9 @@
  */
 package de.ingrid.search.utils.facet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,10 +37,9 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.util.OpenBitSet;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.ingrid.search.utils.IQueryParser;
 import de.ingrid.search.utils.LuceneIndexReaderWrapper;
@@ -55,7 +57,7 @@ public class FacetManagerTest {
     private DummyQueryParsers qps;
     private File indexDir;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         IndexSearcher searcher = null;
         indexDir = DummyIndex.getTestIndex();
@@ -90,7 +92,7 @@ public class FacetManagerTest {
         fm.setFacetCounters(Arrays.asList(new IFacetCounter[] { fc }));
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (indexDir != null && indexDir.exists()) {
             indexDir.delete();
@@ -98,7 +100,7 @@ public class FacetManagerTest {
     }
 
     @Test
-    public final void testGetFacetCounts() {
+    final void testGetFacetCounts() {
 
         IngridQuery ingridQuery = null;
         try {
@@ -110,13 +112,13 @@ public class FacetManagerTest {
         addFacets(ingridQuery);
 
         OpenBitSet[] queryBitSets = FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery),
-                new LuceneIndexReaderWrapper(new IndexReader[] { indexReader }));
+                new LuceneIndexReaderWrapper(new IndexReader[]{indexReader}));
         IngridDocument counts = fm.getFacetClassCounts(ingridQuery, queryBitSets);
 
-        Assert.assertTrue("Cardinality of facet class must not be bigger than the cardinality of query.",
-                sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"));
+        assertTrue(sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"),
+                "Cardinality of facet class must not be bigger than the cardinality of query.");
 
-        Assert.assertEquals(2, counts.getLong("partner:bund"));
+        assertEquals(2, counts.getLong("partner:bund"));
 
         // check for odd class cast exception in
         // FacetUtils.getBitSetsFromQuery()
@@ -133,18 +135,18 @@ public class FacetManagerTest {
         addFacets(ingridQuery);
 
         queryBitSets = FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery), new LuceneIndexReaderWrapper(
-                new IndexReader[] { indexReader }));
+                new IndexReader[]{indexReader}));
         counts = fm.getFacetClassCounts(ingridQuery, queryBitSets);
 
-        Assert.assertTrue("Cardinality of facet class must not be bigger than the cardinality of query.",
-                sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"));
+        assertTrue(sumBitsetCardinalities(queryBitSets) >= counts.getLong("partner:bund"),
+                "Cardinality of facet class must not be bigger than the cardinality of query.");
 
-        Assert.assertEquals(0, counts.getLong("partner:bund"));
+        assertEquals(0, counts.getLong("partner:bund"));
 
     }
 
     @Test
-    public void cacheTest() {
+    void cacheTest() {
         long start = System.currentTimeMillis();
         testGetFacetCounts();
         long duration = System.currentTimeMillis() - start;
@@ -165,13 +167,13 @@ public class FacetManagerTest {
         addFacets(ingridQuery);
 
         fm.getFacetClassCounts(ingridQuery, FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery),
-                new LuceneIndexReaderWrapper(new IndexReader[] { indexReader })));
+                new LuceneIndexReaderWrapper(new IndexReader[]{indexReader})));
         duration = System.currentTimeMillis() - start;
         System.out.println("third different search took: " + duration + "ms");
     }
 
     @Test
-    public void cacheOverflowTest() {
+    void cacheOverflowTest() {
         IngridQuery ingridQuery = null;
         try {
             ingridQuery = QueryStringParser.parse("wasser");
@@ -182,13 +184,13 @@ public class FacetManagerTest {
         addLotsOfFacets(ingridQuery);
         long start = System.currentTimeMillis();
         fm.getFacetClassCounts(ingridQuery, FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery),
-                new LuceneIndexReaderWrapper(new IndexReader[] { indexReader })));
+                new LuceneIndexReaderWrapper(new IndexReader[]{indexReader})));
         long duration = System.currentTimeMillis() - start;
         System.out.println("many facets search took: " + duration + "ms");
 
         start = System.currentTimeMillis();
         fm.getFacetClassCounts(ingridQuery, FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery),
-                new LuceneIndexReaderWrapper(new IndexReader[] { indexReader })));
+                new LuceneIndexReaderWrapper(new IndexReader[]{indexReader})));
         duration = System.currentTimeMillis() - start;
         System.out.println("many facets 2nd search took: " + duration + "ms");
 
@@ -200,13 +202,13 @@ public class FacetManagerTest {
         addLotsOfFacets(ingridQuery);
         start = System.currentTimeMillis();
         fm.getFacetClassCounts(ingridQuery, FacetUtils.getBitSetsFromQuery(qps.parse(ingridQuery),
-                new LuceneIndexReaderWrapper(new IndexReader[] { indexReader })));
+                new LuceneIndexReaderWrapper(new IndexReader[]{indexReader})));
         duration = System.currentTimeMillis() - start;
         System.out.println("many facets 3nd different search took: " + duration + "ms");
     }
 
     @Test
-    public void filterFacetDefinitionTest() {
+    void filterFacetDefinitionTest() {
         IngridQuery ingridQuery = null;
         try {
             ingridQuery = QueryStringParser.parse("wasser");
@@ -226,8 +228,8 @@ public class FacetManagerTest {
         facetClassProcessor.setFacetFilterDefinitions(config);
         List<FacetDefinition> defs = FacetUtils.getFacetDefinitions(ingridQuery);
         facetClassProcessor.process(defs);
-        Assert.assertEquals("changed", defs.get(1).getClasses().get(0).getFragment());
-        Assert.assertEquals("changed2", defs.get(2).getClasses().get(0).getFragment());
+        assertEquals("changed", defs.get(1).getClasses().get(0).getFragment());
+        assertEquals("changed2", defs.get(2).getClasses().get(0).getFragment());
     }
 
     @SuppressWarnings("unchecked")

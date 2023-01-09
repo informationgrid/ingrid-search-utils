@@ -274,25 +274,28 @@ public class FacetClassProducer {
         }
 
         BooleanQuery bq = new BooleanQuery();
-        List<FieldQuery> partners = iq.getArrayList("partner");
+        List<Object> partners = iq.getArrayList("partner");
         if (partners != null) {
-            for (FieldQuery partner : partners) {
+            for (Object partner_object : partners) {
+                FieldQuery partner = (FieldQuery) partner_object;
                 Term luceneTerm = new Term(partner.getFieldName(), partner.getFieldValue());
                 TermQuery luceneTermQuery = new TermQuery(luceneTerm);
                 bq.add(luceneTermQuery, Occur.MUST);
             }
         }
-        List<FieldQuery> providers = iq.getArrayList("provider");
+        List<Object> providers = iq.getArrayList("provider");
         if (providers != null) {
-            for (FieldQuery provider : providers) {
+            for (Object provider_object : providers) {
+                FieldQuery provider = (FieldQuery) provider_object;
                 Term luceneTerm = new Term(provider.getFieldName(), provider.getFieldValue());
                 TermQuery luceneTermQuery = new TermQuery(luceneTerm);
                 bq.add(luceneTermQuery, Occur.MUST);
             }
         }
-        List<FieldQuery> datatypes = iq.getArrayList("datatype");
+        List<Object> datatypes = iq.getArrayList("datatype");
         if (datatypes != null) {
-            for (FieldQuery datatype : datatypes) {
+            for (Object datatype_object : datatypes) {
+                FieldQuery datatype = (FieldQuery) datatype_object;
                 Term luceneTerm = new Term(datatype.getFieldName(), datatype.getFieldValue());
                 TermQuery luceneTermQuery = new TermQuery(luceneTerm);
                 bq.add(luceneTermQuery, Occur.MUST);

@@ -42,9 +42,9 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.OpenBitSet;
 import org.apache.lucene.util.PriorityQueue;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LuceneBitSetSearchNonDeprecatedTest {
 
@@ -54,7 +54,7 @@ public class LuceneBitSetSearchNonDeprecatedTest {
     private File indexDir = null;
     
 
-    @Before
+    @BeforeEach
     public void init() {
         try {
             indexDir = DummyIndex.getTestIndex();
@@ -68,50 +68,21 @@ public class LuceneBitSetSearchNonDeprecatedTest {
         }
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         if (indexDir != null && indexDir.exists()) {
             indexDir.delete();
         }
     }
-    
+
 
     @Test
-    public void facetSearch() throws Exception {
+    void facetSearch() throws Exception {
         subQueries = new HashMap<String, Query>();
-        
-        List<String[]> facets = getAllFieldValues(new String[] {"partner", "provider"}, 200);
-        for (String[] facet : facets) {
-            subQueries.put(facet[0]+":"+facet[1], new TermQuery(new Term(facet[0],facet[1])));
-        }
 
-        Map<String, Long> facetCounts = new HashMap<String, Long>();
-        IndexReader reader = searcher.getIndexReader();
-        baseQuery = getBaseQuery();
-        CachingWrapperFilter baseQueryFilter = new CachingWrapperFilter(new QueryWrapperFilter(baseQuery));
-        //new OpenBitSet(baseQueryFilter.getDocIdSet(reader).iterator(), 1000).;
-        OpenBitSet baseBitSet = (OpenBitSet) baseQueryFilter.getDocIdSet(reader); 
-        
-        long start = System.currentTimeMillis();
-        
-        for (String attribute : subQueries.keySet()) {
-            CachingWrapperFilter filter = new CachingWrapperFilter(new QueryWrapperFilter(subQueries.get(attribute)));
-            OpenBitSet filterBitSet = (OpenBitSet) filter.getDocIdSet(reader);
-            facetCounts.put(attribute, getFacetHitCount(baseBitSet, filterBitSet));
-        }
-        
-        long duration = System.currentTimeMillis() - start;
-        System.out.println("pure search took: " + duration + "ms");
-
-    }
-    
-    @Test
-    public void facetSearch1000Locations() throws Exception {
-        subQueries = new HashMap<String, Query>();
-        
-        List<String[]> facets = getAllFieldValues(new String[] {"location"}, 500);
+        List<String[]> facets = getAllFieldValues(new String[]{"partner", "provider"}, 200);
         for (String[] facet : facets) {
-            subQueries.put(facet[0]+":"+facet[1], new TermQuery(new Term(facet[0],facet[1])));
+            subQueries.put(facet[0] + ":" + facet[1], new TermQuery(new Term(facet[0], facet[1])));
         }
 
         Map<String, Long> facetCounts = new HashMap<String, Long>();
@@ -120,15 +91,44 @@ public class LuceneBitSetSearchNonDeprecatedTest {
         CachingWrapperFilter baseQueryFilter = new CachingWrapperFilter(new QueryWrapperFilter(baseQuery));
         //new OpenBitSet(baseQueryFilter.getDocIdSet(reader).iterator(), 1000).;
         OpenBitSet baseBitSet = (OpenBitSet) baseQueryFilter.getDocIdSet(reader);
-        
+
         long start = System.currentTimeMillis();
-        
+
         for (String attribute : subQueries.keySet()) {
             CachingWrapperFilter filter = new CachingWrapperFilter(new QueryWrapperFilter(subQueries.get(attribute)));
             OpenBitSet filterBitSet = (OpenBitSet) filter.getDocIdSet(reader);
             facetCounts.put(attribute, getFacetHitCount(baseBitSet, filterBitSet));
         }
-        
+
+        long duration = System.currentTimeMillis() - start;
+        System.out.println("pure search took: " + duration + "ms");
+
+    }
+
+    @Test
+    void facetSearch1000Locations() throws Exception {
+        subQueries = new HashMap<String, Query>();
+
+        List<String[]> facets = getAllFieldValues(new String[]{"location"}, 500);
+        for (String[] facet : facets) {
+            subQueries.put(facet[0] + ":" + facet[1], new TermQuery(new Term(facet[0], facet[1])));
+        }
+
+        Map<String, Long> facetCounts = new HashMap<String, Long>();
+        IndexReader reader = searcher.getIndexReader();
+        baseQuery = getBaseQuery();
+        CachingWrapperFilter baseQueryFilter = new CachingWrapperFilter(new QueryWrapperFilter(baseQuery));
+        //new OpenBitSet(baseQueryFilter.getDocIdSet(reader).iterator(), 1000).;
+        OpenBitSet baseBitSet = (OpenBitSet) baseQueryFilter.getDocIdSet(reader);
+
+        long start = System.currentTimeMillis();
+
+        for (String attribute : subQueries.keySet()) {
+            CachingWrapperFilter filter = new CachingWrapperFilter(new QueryWrapperFilter(subQueries.get(attribute)));
+            OpenBitSet filterBitSet = (OpenBitSet) filter.getDocIdSet(reader);
+            facetCounts.put(attribute, getFacetHitCount(baseBitSet, filterBitSet));
+        }
+
         long duration = System.currentTimeMillis() - start;
         System.out.println("pure search took: " + duration + "ms");
 
