@@ -102,11 +102,12 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jdeprscan-plugin</artifactId>
-        <version>3.0.0-alpha-1</version>
+        <groupId>external.atlassian.jgitflow</groupId>
+        <artifactId>jgitflow-maven-plugin</artifactId>
+        <version>1.0-m4.3</version>
         <configuration>
-          <release>11</release>
+          <defaultOriginUrl>https://github.com/informationgrid/ingrid-search-utils</defaultOriginUrl>
+          <noDeploy>true</noDeploy>
         </configuration>
       </plugin>
   </plugins>
