@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-search-utils</artifactId>
-  <version>5.15.0-SNAPSHOT</version>
+  <version>6.0.0</version>
   <packaging>jar</packaging>
   <name>InGrid Search-Utils</name>
   <url>http://maven.apache.org</url>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>5.15.0-SNAPSHOT</version>
+      <version>6.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>junit</groupId>
@@ -102,11 +102,12 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jdeprscan-plugin</artifactId>
-        <version>3.0.0-alpha-1</version>
+        <groupId>external.atlassian.jgitflow</groupId>
+        <artifactId>jgitflow-maven-plugin</artifactId>
+        <version>1.0-m4.3</version>
         <configuration>
-          <release>11</release>
+          <defaultOriginUrl>https://github.com/informationgrid/ingrid-search-utils</defaultOriginUrl>
+          <noDeploy>true</noDeploy>
         </configuration>
       </plugin>
   </plugins>
