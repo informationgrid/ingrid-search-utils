@@ -29,7 +29,7 @@
   </repositories>
   
   <properties>
-    <log4j2.version>2.19.0</log4j2.version>
+    <log4j2.version>2.22.0</log4j2.version>
   </properties>
   
   <!-- ==================== DEPENDENCIES ==================== -->
