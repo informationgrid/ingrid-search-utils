@@ -26,17 +26,17 @@
       <url>https://nexus.informationgrid.eu/repository/maven-public</url>
     </repository>
   </repositories>
-  
+
   <properties>
     <log4j2.version>2.22.1</log4j2.version>
   </properties>
-  
+
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
-      <version>7.0.0</version>
+      <version>7.5.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>junit</groupId>
